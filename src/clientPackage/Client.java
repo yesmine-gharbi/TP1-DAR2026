@@ -18,20 +18,43 @@ public class Client {
                     new DataOutputStream(socket.getOutputStream());
 
             Scanner clavier = new Scanner(System.in);
-            int x;
+
+            int choix;
+            double a;
+            double b;
+            String resultat;
 
             do {
-                System.out.print("Entrez un entier (0 pour quitter) : ");
-                x = clavier.nextInt();
+                System.out.println("\n--- CALCULATRICE ---");
+                System.out.println("1. Addition");
+                System.out.println("2. Soustraction");
+                System.out.println("3. Multiplication");
+                System.out.println("4. Division");
+                System.out.println("0. Quitter");
+                System.out.print("Votre choix : ");
 
-                sortie.writeInt(x);
+                choix = clavier.nextInt();
+                sortie.writeInt(choix);
                 sortie.flush();
 
-                if (x != 0) {
-                    int resultat = entree.readInt();
-                    System.out.println("Résultat : " + resultat);
+                if (choix >= 1 && choix <= 4) {
+                    System.out.print("Premier nombre : ");
+                    a = clavier.nextDouble();
+
+                    System.out.print("Deuxième nombre : ");
+                    b = clavier.nextDouble();
+
+                    sortie.writeDouble(a);
+                    sortie.writeDouble(b);
+                    sortie.flush();
+
+                    resultat = entree.readUTF();
+                    System.out.println(resultat);
+                } else if (choix != 0) {
+                    resultat = entree.readUTF();
+                    System.out.println(resultat);
                 }
-            } while (x != 0);
+            } while (choix != 0);
 
             entree.close();
             sortie.close();

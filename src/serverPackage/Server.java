@@ -21,17 +21,41 @@ public class Server {
             DataOutputStream sortie =
                     new DataOutputStream(socket.getOutputStream());
 
-            int x;
+            int choix;
+            double a;
+            double b;
+            double resultat;
 
             do {
-                x = entree.readInt();
+                choix = entree.readInt();
 
-                if (x != 0) {
-                    int resultat = x * 5;
-                    sortie.writeInt(resultat);
+                if (choix != 0) {
+                    a = entree.readDouble();
+                    b = entree.readDouble();
+
+                    if (choix == 1) {
+                        resultat = a + b;
+                        sortie.writeUTF("Résultat : " + resultat);
+                    } else if (choix == 2) {
+                        resultat = a - b;
+                        sortie.writeUTF("Résultat : " + resultat);
+                    } else if (choix == 3) {
+                        resultat = a * b;
+                        sortie.writeUTF("Résultat : " + resultat);
+                    } else if (choix == 4) {
+                        if (b != 0) {
+                            resultat = a / b;
+                            sortie.writeUTF("Résultat : " + resultat);
+                        } else {
+                            sortie.writeUTF("Erreur : division par zéro");
+                        }
+                    } else {
+                        sortie.writeUTF("Choix invalide");
+                    }
+
                     sortie.flush();
                 }
-            } while (x != 0);
+            } while (choix != 0);
 
             entree.close();
             sortie.close();
